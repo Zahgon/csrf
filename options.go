@@ -10,11 +10,7 @@ type Option func(*csrf)
 // MaxAge sets the maximum age (in seconds) of a CSRF token's underlying cookie.
 // Defaults to 12 hours. Call csrf.MaxAge(0) to explicitly set session-only
 // cookies.
-func MaxAge(age int) Option {
-	return func(cs *csrf) {
-		cs.opts.MaxAge = age
-	}
-}
+func MaxAge(age int) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // Domain sets the cookie domain. Defaults to the current domain of the request
 // only (recommended).
@@ -22,11 +18,7 @@ func MaxAge(age int) Option {
 // This should be a hostname and not a URL. If set, the domain is treated as
 // being prefixed with a '.' - e.g. "example.com" becomes ".example.com" and
 // matches "www.example.com" and "secure.example.com".
-func Domain(domain string) Option {
-	return func(cs *csrf) {
-		cs.opts.Domain = domain
-	}
-}
+func Domain(domain string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // Path sets the cookie path. Defaults to the path the cookie was issued from
 // (recommended).
@@ -34,31 +26,24 @@ func Domain(domain string) Option {
 // This instructs clients to only respond with cookie for that path and its
 // subpaths - i.e. a cookie issued from "/register" would be included in requests
 // to "/register/step2" and "/register/submit".
-func Path(p string) Option {
-	return func(cs *csrf) {
-		cs.opts.Path = p
-	}
-}
+func Path(p string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // Secure sets the 'Secure' flag on the cookie. Defaults to true (recommended).
 // Set this to 'false' in your development environment otherwise the cookie won't
 // be sent over an insecure channel. Setting this via the presence of a 'DEV'
 // environmental variable is a good way of making sure this won't make it to a
 // production environment.
-func Secure(s bool) Option {
-	return func(cs *csrf) {
-		cs.opts.Secure = s
-	}
-}
+func Secure(s bool) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // HttpOnly sets the 'HttpOnly' flag on the cookie. Defaults to true (recommended).
 func HttpOnly(h bool) Option {
-	return func(cs *csrf) {
-		// Note that the function and field names match the case of the
-		// related http.Cookie field instead of the "correct" HTTPOnly name
-		// that golint suggests.
-		cs.opts.HttpOnly = h
-	}
+	_ = "STUB: not implemented"
+	return *
+
+	// Note that the function and field names match the case of the
+	// related http.Cookie field instead of the "correct" HTTPOnly name
+	// that golint suggests.
+	new(Option)
 }
 
 // SameSite sets the cookie SameSite attribute. Defaults to blank to maintain
@@ -75,11 +60,7 @@ func HttpOnly(h bool) Option {
 // CSRF-prone request methods (e.g. POST).
 //
 // This option is only available for go 1.11+.
-func SameSite(s SameSiteMode) Option {
-	return func(cs *csrf) {
-		cs.opts.SameSite = s
-	}
-}
+func SameSite(s SameSiteMode) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // ErrorHandler allows you to change the handler called when CSRF request
 // processing encounters an invalid token or request. A typical use would be to
@@ -88,84 +69,50 @@ func SameSite(s SameSiteMode) Option {
 //
 // Note that a custom error handler can also access the csrf.FailureReason(r)
 // function to retrieve the CSRF validation reason from the request context.
-func ErrorHandler(h http.Handler) Option {
-	return func(cs *csrf) {
-		cs.opts.ErrorHandler = h
-	}
-}
+func ErrorHandler(h http.Handler) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // RequestHeader allows you to change the request header the CSRF middleware
 // inspects. The default is X-CSRF-Token.
-func RequestHeader(header string) Option {
-	return func(cs *csrf) {
-		cs.opts.RequestHeader = header
-	}
-}
+func RequestHeader(header string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // FieldName allows you to change the name attribute of the hidden <input> field
 // inspected by this package. The default is 'gorilla.csrf.Token'.
-func FieldName(name string) Option {
-	return func(cs *csrf) {
-		cs.opts.FieldName = name
-	}
-}
+func FieldName(name string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // CookieName changes the name of the CSRF cookie issued to clients.
 //
 // Note that cookie names should not contain whitespace, commas, semicolons,
 // backslashes or control characters as per RFC6265.
-func CookieName(name string) Option {
-	return func(cs *csrf) {
-		cs.opts.CookieName = name
-	}
-}
+func CookieName(name string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // TrustedOrigins configures a set of origins (Referers) that are considered as trusted.
 // This will allow cross-domain CSRF use-cases - e.g. where the front-end is served
 // from a different domain than the API server - to correctly pass a CSRF check.
 //
 // You should only provide origins you own or have full control over.
-func TrustedOrigins(origins []string) Option {
-	return func(cs *csrf) {
-		cs.opts.TrustedOrigins = origins
-	}
-}
+func TrustedOrigins(origins []string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // setStore sets the store used by the CSRF middleware.
 // Note: this is private (for now) to allow for internal API changes.
-func setStore(s store) Option {
-	return func(cs *csrf) {
-		cs.st = s
-	}
-}
+func setStore(s store) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // parseOptions parses the supplied options functions and returns a configured
 // csrf handler.
 func parseOptions(h http.Handler, opts ...Option) *csrf {
+	_ = "STUB: not implemented"
 	// Set the handler to call after processing.
-	cs := &csrf{
-		h: h,
-	}
-
-	// Default to true. See Secure & HttpOnly function comments for rationale.
-	// Set here to allow package users to override the default.
-	cs.opts.Secure = true
-	cs.opts.HttpOnly = true
-
-	// Set SameSite=Lax by default, allowing the CSRF cookie to only be sent on
-	// top-level navigations.
-	cs.opts.SameSite = SameSiteLaxMode
-
-	// Default; only override this if the package user explicitly calls MaxAge(0)
-	cs.opts.MaxAge = defaultAge
-
-	// Range over each options function and apply it
-	// to our csrf type to configure it. Options functions are
-	// applied in order, with any conflicting options overriding
-	// earlier calls.
-	for _, option := range opts {
-		option(cs)
-	}
-
-	return cs
+	return nil
 }
+
+// Default to true. See Secure & HttpOnly function comments for rationale.
+// Set here to allow package users to override the default.
+
+// Set SameSite=Lax by default, allowing the CSRF cookie to only be sent on
+// top-level navigations.
+
+// Default; only override this if the package user explicitly calls MaxAge(0)
+
+// Range over each options function and apply it
+// to our csrf type to configure it. Options functions are
+// applied in order, with any conflicting options overriding
+// earlier calls.

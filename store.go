@@ -5,7 +5,6 @@ package csrf
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/gorilla/securecookie"
 )
@@ -37,51 +36,22 @@ type cookieStore struct {
 // Get retrieves a CSRF token from the session cookie. It returns an empty token
 // if decoding fails (e.g. HMAC validation fails or the named cookie doesn't exist).
 func (cs *cookieStore) Get(r *http.Request) ([]byte, error) {
+	_ = "STUB: not implemented"
 	// Retrieve the cookie from the request
-	cookie, err := r.Cookie(cs.name)
-	if err != nil {
-		return nil, err
-	}
-
-	token := make([]byte, tokenLength)
-	// Decode the HMAC authenticated cookie.
-	err = cs.sc.Decode(cs.name, cookie.Value, &token)
-	if err != nil {
-		return nil, err
-	}
-
-	return token, nil
+	return nil, nil
 }
+
+// Decode the HMAC authenticated cookie.
 
 // Save stores the CSRF token in the session cookie.
 func (cs *cookieStore) Save(token []byte, w http.ResponseWriter) error {
+	_ = "STUB: not implemented"
 	// Generate an encoded cookie value with the CSRF token.
-	encoded, err := cs.sc.Encode(cs.name, token)
-	if err != nil {
-		return err
-	}
-
-	cookie := &http.Cookie{
-		Name:     cs.name,
-		Value:    encoded,
-		MaxAge:   cs.maxAge,
-		HttpOnly: cs.httpOnly,
-		Secure:   cs.secure,
-		SameSite: http.SameSite(cs.sameSite),
-		Path:     cs.path,
-		Domain:   cs.domain,
-	}
-
-	// Set the Expires field on the cookie based on the MaxAge
-	// If MaxAge <= 0, we don't set the Expires attribute, making the cookie
-	// session-only.
-	if cs.maxAge > 0 {
-		cookie.Expires = time.Now().Add(
-			time.Duration(cs.maxAge) * time.Second)
-	}
-
-	// Write the authenticated cookie to the response.
-	http.SetCookie(w, cookie)
-
 	return nil
 }
+
+// Set the Expires field on the cookie based on the MaxAge
+// If MaxAge <= 0, we don't set the Expires attribute, making the cookie
+// session-only.
+
+// Write the authenticated cookie to the response.

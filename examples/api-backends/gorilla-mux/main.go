@@ -1,3 +1,4 @@
+//go:build ignore
 // +build ignore
 
 package main
@@ -56,11 +57,6 @@ func main() {
 	log.Panic(server.ListenAndServe())
 }
 
-func Get(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("X-CSRF-Token", csrf.Token(r))
-	w.WriteHeader(http.StatusOK)
-}
+func Get(w http.ResponseWriter, r *http.Request) { _ = "STUB: not implemented"; return }
 
-func Post(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-}
+func Post(w http.ResponseWriter, r *http.Request) { _ = "STUB: not implemented"; return }
